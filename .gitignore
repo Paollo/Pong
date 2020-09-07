@@ -58,3 +58,12 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+/Pong/Library/
+/Pong/Temp/
+*.csproj
+*.pidb
+*.unityproj
+*.sln
+*.userprefs
+/Pong/Temp/
+
