@@ -20,7 +20,8 @@ public class GameAction : MonoBehaviour
     #region Properties
 
     public static GameAction Instance{
-        get;private set;
+        get;
+        private set;
     }
 
     #endregion
@@ -64,11 +65,12 @@ public class GameAction : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance!=null)
+        if(Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+        
         Instance = this;        
     }
 

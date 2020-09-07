@@ -20,15 +20,18 @@ public class Ball : MonoBehaviour
     }
 
     private Vector2 Direction {
-        get;set;
+        get;
+        set;
     }
 
     private float Radius {
-        get;set;
+        get;
+        set;
     }
 
     private float SpeedToAdd {
-        get;set;
+        get;
+        set;
     }
 
     #endregion
@@ -39,7 +42,7 @@ public class Ball : MonoBehaviour
     {
         Direction = Vector2.one.normalized;
         Radius = GetComponent<CircleCollider2D>().radius;
-        SpeedToAdd = MoveSpeed/100f;
+        SpeedToAdd = MoveSpeed / Constants.SPEED_FACTOR;
     }
 
     private void Update() 
@@ -56,21 +59,20 @@ public class Ball : MonoBehaviour
         else
         {
             TryKillPlayer();     
-        }
-        
+        }        
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.GetComponent<Racket>()!=null)
+        if(other.GetComponent<Racket>() != null)
         {
             float touchPoint = other.transform.InverseTransformPoint(transform.position).y;
-            Vector2 additionalVector = new Vector2(0,touchPoint*10);
-            Direction = (new Vector2(-Direction.x,Direction.y) + additionalVector).normalized;
+            Vector2 additionalVector = new Vector2(0, touchPoint * Constants.RANDOM_DIRECTION_Y);
+            Direction = (new Vector2(-Direction.x, Direction.y) + additionalVector).normalized;
             MoveSpeed += SpeedToAdd; 
-            if(GameAction.Instance!=null)
+
+            if(GameAction.Instance != null)
             {
-                Debug.Log("Odbicie");
                 GameAction.Instance.NotifyOnBounceBall();
             }            
         }
@@ -78,10 +80,11 @@ public class Ball : MonoBehaviour
 
     private void TryKillPlayer()
     {
-        if(transform.position.x < GameManager.Instance.BottomLeft.x +Radius && Direction.x <0)
+        if(transform.position.x < GameManager.Instance.BottomLeft.x + Radius && Direction.x < 0)
         {
             Destroy(gameObject);
-            if(GameAction.Instance!=null)
+
+            if(GameAction.Instance != null)
             {
                 GameAction.Instance.NotifyOnPlayerLose();
             }            
@@ -90,33 +93,33 @@ public class Ball : MonoBehaviour
 
     private void TryBounceFromBottomEdge()
     {
-        if(transform.position.y < GameManager.Instance.BottomLeft.y + Radius + GameManager.Instance.BorderOffset && Direction.y <0)
+        if(transform.position.y < GameManager.Instance.BottomLeft.y + Radius + GameManager.Instance.BorderOffset && Direction.y < 0)
         {
-            Direction = new Vector2(Direction.x,-Direction.y);
+            Direction = new Vector2(Direction.x, -Direction.y);
         }
     }
 
     private void TryBounceFromTopEdge()
     {
-        if(transform.position.y > GameManager.Instance.TopRight.y -Radius - GameManager.Instance.BorderOffset && Direction.y >0)
+        if(transform.position.y > GameManager.Instance.TopRight.y - Radius - GameManager.Instance.BorderOffset && Direction.y > 0)
         {
-            Direction = new Vector2(Direction.x,-Direction.y);
+            Direction = new Vector2(Direction.x, -Direction.y);
         }
     }
 
     private void TryBounceFromRightEdge()
     {
-        if(transform.position.x > GameManager.Instance.TopRight.x - Radius - GameManager.Instance.BorderOffset && Direction.x >0)
+        if(transform.position.x > GameManager.Instance.TopRight.x - Radius - GameManager.Instance.BorderOffset && Direction.x > 0)
         {
-            Direction = new Vector2(-Direction.x,Direction.y);
+            Direction = new Vector2(-Direction.x, Direction.y);
         }
     }
 
     private void TryBounceFromLeftEdge()
     {
-        if(transform.position.x < GameManager.Instance.BottomLeft.x + Radius + GameManager.Instance.BorderOffset && Direction.x <0)
+        if(transform.position.x < GameManager.Instance.BottomLeft.x + Radius + GameManager.Instance.BorderOffset && Direction.x < 0)
         {
-            Direction = new Vector2(-Direction.x,Direction.y);
+            Direction = new Vector2(-Direction.x, Direction.y);
         }
     }
 

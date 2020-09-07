@@ -20,7 +20,7 @@ public class MainMenuGUI : MonoBehaviour
 
     public void StartNewGame()
     {
-        if(GameManager.Instance!=null)
+        if(GameManager.Instance != null)
         {
             GameManager.Instance.StartNewGame();
         }
@@ -28,7 +28,7 @@ public class MainMenuGUI : MonoBehaviour
 
     public void QuitGame()
     {
-        if(GameManager.Instance!=null)
+        if(GameManager.Instance != null)
         {
             GameManager.Instance.QuitGame();
         }

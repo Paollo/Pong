@@ -5,11 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    #region Members
-
-    public static GameManager Instance{
-        get;private set;
-    }
+    #region Members    
 
     [SerializeField]
     private Ball ballReference;
@@ -28,6 +24,11 @@ public class GameManager : MonoBehaviour
     #endregion
     
     #region Properties
+
+    public static GameManager Instance {
+        get;
+        private set;
+    }
 
     public Vector2 BottomLeft {
         get;
@@ -67,11 +68,13 @@ public class GameManager : MonoBehaviour
     }   
 
     private Racket CacheRacket {
-        get;set;
+        get;
+        set;
     } 
 
     private Ball CacheBall {
-        get;set;
+        get;
+        set;
     }
 
     #endregion
@@ -92,7 +95,7 @@ public class GameManager : MonoBehaviour
         PlayerManager.Instance.Restart();
         SpawnRacket();
 
-        if(GameAction.Instance!=null)
+        if(GameAction.Instance != null)
         {
             GameAction.Instance.NotifyRestartGame();
         }
@@ -104,7 +107,7 @@ public class GameManager : MonoBehaviour
     {
         SetMainMenu(false);
         Destroy(CacheBall.gameObject);
-        SceneManager.LoadScene("Game");
+        SceneManager.LoadScene(Constants.GAME_SCENE_NAME);
         SpawnRacket();
         StartCoroutine(StartGame());
     }
@@ -117,7 +120,7 @@ public class GameManager : MonoBehaviour
     public void ReturnToMainMenu()
     {
         SetMainMenu(true);
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene(Constants.MAIN_MENU_SCENE_NAME);
         SpawnBall();
     }
 
@@ -128,11 +131,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(Instance!=null)
+        if(Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+
         Instance = this;        
         CurrentCamera = Camera.main;
     }
@@ -143,6 +147,11 @@ public class GameManager : MonoBehaviour
         AttachEvents();
     }
 
+    private void OnDestroy()
+    {
+        DetachEvents();
+    }
+
     private void Initialize()
     {
         BestUserScore = SerializeObjectHelper.Deserialize<BestScore>();
@@ -151,25 +160,31 @@ public class GameManager : MonoBehaviour
 
         if(IsMainMenu == true)
         {
-            //SpawnRacket();
-            //StartCoroutine(StartGame());
             SpawnBall();
         }
-        //SpawnBall();
     }
 
     private void AttachEvents()
     {
-        if(GameAction.Instance!=null)
+        if(GameAction.Instance != null)
         {
             GameAction.Instance.OnPlayerLose += Restart;
             GameAction.Instance.OnGameOver += DestroyRacket;
         }   
     }
 
+    private void DetachEvents()
+    {
+        if(GameAction.Instance != null)
+        {
+            GameAction.Instance.OnPlayerLose -= Restart;
+            GameAction.Instance.OnGameOver -= DestroyRacket;
+        }   
+    }
+
     private void Restart()
     {
-        if(PlayerManager.Instance!=null && PlayerManager.Instance.CanStart() == true)
+        if(PlayerManager.Instance != null && PlayerManager.Instance.CanStart() == true)
         {
             StartCoroutine(StartGame());
         }        
@@ -183,22 +198,24 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator StartGame()
     {
-        int counter = 3;
+        int counter = Constants.COUNTER_TO_START;
 
-        while (counter>0)
+        while (counter > 0)
         {
-            if(GameAction.Instance!=null)
+            if(GameAction.Instance != null)
             {
                 GameAction.Instance.NotifyStartGameCounterUpdate(counter);
             }  
-            yield return new WaitForSeconds(1f);
+
+            yield return new WaitForSeconds(Constants.ONE_SECOND);
             counter--;
         }
 
-        if(GameAction.Instance!=null)
+        if(GameAction.Instance != null)
         {
             GameAction.Instance.NotifyStartGameCounterUpdate(counter);
         }  
+
         yield return new WaitForSeconds(.2f);
 
         SpawnRacket();
@@ -213,7 +230,7 @@ public class GameManager : MonoBehaviour
 
     private void SpawnRacket()
     {
-        if(CacheRacket!=null)
+        if(CacheRacket != null)
         {
             return;
         }

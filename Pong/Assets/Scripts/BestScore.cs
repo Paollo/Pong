@@ -10,7 +10,7 @@ public class BestScore
     [SerializeField]
     private string userName = string.Empty;
     [SerializeField]
-    private int score =0;
+    private int score = 0;
     
     #endregion
     

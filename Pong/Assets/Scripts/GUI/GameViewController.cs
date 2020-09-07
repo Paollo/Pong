@@ -49,7 +49,8 @@ public class GameViewController : MonoBehaviour
     }
 
     private List<Image> SpawnedLifes {
-        get;set;
+        get;
+        set;
     } = new List<Image>();
 
     #endregion
@@ -62,13 +63,18 @@ public class GameViewController : MonoBehaviour
         AttachEvents();        
     }
 
+    private void OnDestroy()
+    {
+        DetachEvents();
+    }
+
     private void Initialize()
     {
         NamePanel.Initialize(SaveAndShowBestScorePanel);
         NamePanel.gameObject.SetActive(false);
         ScorePanel.gameObject.SetActive(false);
 
-        if(PlayerManager.Instance!=null)
+        if(PlayerManager.Instance != null)
         {
             UpdateHealthPoints(PlayerManager.Instance.GetLifes());
             UpdateScorePoints(PlayerManager.Instance.GetScore());
@@ -77,7 +83,7 @@ public class GameViewController : MonoBehaviour
 
     private void AttachEvents()
     {
-        if(GameAction.Instance!=null)
+        if(GameAction.Instance != null)
         {
             GameAction.Instance.OnDecreaseHealthPoints += UpdateHealthPoints;
             GameAction.Instance.OnIncreaseScore += UpdateScorePoints;
@@ -89,7 +95,7 @@ public class GameViewController : MonoBehaviour
 
     private void DetachEvents()
     {
-        if(GameAction.Instance!=null)
+        if(GameAction.Instance != null)
         {
             GameAction.Instance.OnDecreaseHealthPoints -= UpdateHealthPoints;
             GameAction.Instance.OnIncreaseScore -= UpdateScorePoints;
@@ -106,17 +112,18 @@ public class GameViewController : MonoBehaviour
 
     private void UpdateStartCounter(int counter)
     {
-        if(counter==0) 
+        if(counter == 0) 
         {
             InfoText.text = string.Empty;
             return;
         }
+
         InfoText.text = counter.ToString();
     }
 
     private void UpdateScorePoints(int score)
     {
-        ScoreText.text = string.Format("Score: {0}", score.ToString("0000"));
+        ScoreText.text = string.Format("Score: {0}", score.ToString(Constants.SCORE_FORMAT));
     }
 
     private void UpdateHealthPoints(int lifes)
@@ -133,7 +140,7 @@ public class GameViewController : MonoBehaviour
 
     private void ShowGameOverState()
     {
-        InfoText.text = "GAME OVER";
+        InfoText.text = Constants.GAME_OVER;
         StartCoroutine(ShowUserNamePanel());
     }
 

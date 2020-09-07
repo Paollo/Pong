@@ -19,7 +19,8 @@ public class UserNamePanel : MonoBehaviour
     }
 
     private System.Action<string> OnClickButton {
-        get;set;
+        get;
+        set;
     }
 
     #endregion
@@ -34,10 +35,6 @@ public class UserNamePanel : MonoBehaviour
     public void ClicButton()
     {
         OnClickButton(UserNameField.text);
-    }
-
-    private void Awake()
-    {
     }
 
     #endregion

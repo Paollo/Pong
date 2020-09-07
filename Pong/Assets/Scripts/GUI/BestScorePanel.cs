@@ -31,9 +31,8 @@ public class BestScorePanel : MonoBehaviour
     public void ShowPanel(BestScore userScore)
     {
         BestScore best = GameManager.Instance.BestUserScore;
-        Debug.Log(best);
-        BestScore.text = string.Format("{0}: {1}", best.UserName, best.Score.ToString("0000"));
-        UserScore.text = string.Format("You - {0}: {1}", userScore.UserName, userScore.Score.ToString("0000"));
+        BestScore.text = string.Format(Constants.BEST_SCORE_FORMAT, best.UserName, best.Score.ToString(Constants.SCORE_FORMAT));
+        UserScore.text = string.Format(Constants.USER_SCORE_FORMAT, userScore.UserName, userScore.Score.ToString(Constants.SCORE_FORMAT));
         gameObject.SetActive(true);
     }
 

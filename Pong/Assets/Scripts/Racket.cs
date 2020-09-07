@@ -37,7 +37,7 @@ public class Racket : MonoBehaviour
     {
         Vector2 startPosition = Vector2.zero;
 
-        startPosition = new Vector2(GameManager.Instance.BottomLeft.x,0);
+        startPosition = new Vector2(GameManager.Instance.BottomLeft.x, 0);
         startPosition -= Vector2.right * StartPositionOffset;
 
         transform.position = startPosition; 
@@ -50,16 +50,16 @@ public class Racket : MonoBehaviour
 
     private void Update() 
     {
-        float horizontalAxis = Input.GetAxis("Horizontal");
-        float verticalAxis = Input.GetAxis("Vertical") * -1; 
+        float horizontalAxis = Input.GetAxis(Constants.HORIZONTAL_AXIS);
+        float verticalAxis = Input.GetAxis(Constants.VERTICAL_AXIS) * -1; 
         float move = (horizontalAxis + verticalAxis) * Time.deltaTime * MoveSpeed;
 
-        if(transform.position.y < GameManager.Instance.BottomLeft.y + Border && move>0)
+        if(transform.position.y < GameManager.Instance.BottomLeft.y + Border && move > 0)
         {
             move = 0f;
         }
 
-        if(transform.position.y > GameManager.Instance.TopRight.y - Border && move<0)
+        if(transform.position.y > GameManager.Instance.TopRight.y - Border && move < 0)
         {
             move = 0f;
         }

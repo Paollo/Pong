@@ -15,8 +15,9 @@ public class PlayerManager : MonoBehaviour
     
     #region Properties
 
-    public static PlayerManager Instance{
-        get;private set;
+    public static PlayerManager Instance {
+        get;
+        private set;
     }
 
     private int Lifes {
@@ -56,11 +57,12 @@ public class PlayerManager : MonoBehaviour
    
     private void Awake()
     {        
-        if(Instance!=null)
+        if(Instance != null)
         {
             Destroy(gameObject);
             return;
         }
+
         Instance = this;        
     }
 
@@ -96,14 +98,14 @@ public class PlayerManager : MonoBehaviour
     {
         Lifes--;
 
-        if(GameAction.Instance!=null)
+        if(GameAction.Instance != null)
         {
            GameAction.Instance.NotifyDecreaseHealthPoints(Lifes);
         }
 
         if(Lifes <= 0)
         {
-            if(GameAction.Instance!=null)
+            if(GameAction.Instance != null)
             {
                 GameAction.Instance.NotifyGameOver();
             }
@@ -114,7 +116,8 @@ public class PlayerManager : MonoBehaviour
     private void BounceBallHandler()
     {
         Score++;
-        if(GameAction.Instance!=null)
+        
+        if(GameAction.Instance != null)
         {
             GameAction.Instance.NotifyIncreaseScore(Score);
         }
